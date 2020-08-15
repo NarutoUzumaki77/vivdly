@@ -7,7 +7,7 @@ const NavBar = () => {
       className="navbar navbar-expand-lg navbar-light"
       style={{ backgroundColor: "#e3f2fd" }}
     >
-      <Link className="navbar-brand" to="/movies">
+      <Link className="navbar-brand" to="/">
         Vidly
       </Link>
       <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
