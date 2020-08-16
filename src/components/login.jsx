@@ -3,7 +3,12 @@ import React, { Component } from "react";
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      account: {
+        username: "",
+        password: "",
+      },
+    };
   }
 
   handleSubmit = (e) => {
@@ -11,16 +16,27 @@ class LoginForm extends Component {
     console.log("Submitted");
   };
 
+  handleChange = ({ currentTarget: input }) => {
+    const account = { ...this.state.account };
+    account[input.name] = input.value;
+    this.setState({ account });
+  };
+
   render() {
+    const { account } = this.state;
+
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Email address</label>
           <input
             autoFocus
+            value={account.username}
+            onChange={this.handleChange}
             type="email"
             className="form-control"
             id="username"
+            name="username"
             aria-describedby="emailHelp"
           ></input>
           <small id="emailHelp" className="form-text text-muted">
@@ -29,7 +45,14 @@ class LoginForm extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" className="form-control" id="password"></input>
+          <input
+            value={account.username}
+            onChange={this.handleChange}
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+          ></input>
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
