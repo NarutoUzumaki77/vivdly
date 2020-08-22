@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import InputField from "./input";
+import SelectOptionField from "./select";
 import Joi from "joi-browser";
 
 class Form extends Component {
@@ -51,7 +52,13 @@ class Form extends Component {
     this.setState({ data, errors });
   };
 
-  renderInput(name, label, type='text') {
+  handleSelected = (e) => {
+    this.setState({
+      selectedOption: e.target.value,
+    });
+  };
+
+  renderInput(name, label, type = "text") {
     const { data, errors } = this.state;
     return (
       <InputField
@@ -60,6 +67,21 @@ class Form extends Component {
         label={label}
         type={type}
         onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  }
+
+  renderSelect(name, label) {
+    const { data, errors, options, selectedOption } = this.state;
+    return (
+      <SelectOptionField
+        name={name}
+        value={data[name]}
+        label={label}
+        options={options}
+        selected={selectedOption}
+        onChange={this.handleSelected}
         error={errors[name]}
       />
     );

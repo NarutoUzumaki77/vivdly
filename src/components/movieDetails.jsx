@@ -1,7 +1,6 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import Select from "react-select";
 import { getMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 
@@ -59,32 +58,12 @@ class MovieDetails extends Form {
     console.log("Submitted");
   };
 
-  handleSelected = (e) => {
-    this.setState({
-      selectedOption: e.target.value
-    });
-  };
-
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Movie Form</h1>
         {this.renderInput("title", "Title")}
-        <div className="form-group">
-          <label htmlFor="genres">Genre</label>
-          <select
-            className="form-control"
-            id="genres"
-            value={this.state.selectedOption}
-            onChange={this.handleSelected}
-          >
-            {this.state.options.map((option) => (
-              <option key={option._id} value={option.name}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        {this.renderSelect("genre", "Genre")}
         {this.renderInput("numberstock", "Number in Stock")}
         {this.renderInput("rate", "Rate")}
         <button
