@@ -5,6 +5,7 @@ import Filter from "./common/filter";
 import { getGenres } from "../services/fakeGenreService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 
 class Movies extends Component {
@@ -58,7 +59,6 @@ class Movies extends Component {
   }
 
   handleSort = (sortColumn) => {
-
     this.setState({ sortColumn });
   };
 
@@ -90,6 +90,9 @@ class Movies extends Component {
             />
           </div>
           <div className="col-10">
+            <Link type="button" className="btn btn-primary" to="/movies" style={{marginBottom: "15px"}}>
+              New Movie
+            </Link>
             <h5>Showing {filtered_movies.length} movies from the Database</h5>
             <MoviesTable
               movies={movies}

@@ -5,7 +5,8 @@ import Rental from "./components/rental";
 import NavBar from "./components/common/navbar";
 import MovieDetails from "./components/movieDetails";
 import NotFound from "./components/notFound";
-import LoginForm from './components/login';
+import LoginForm from "./components/login";
+import RegisterForm from "./components/register";
 import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 
@@ -15,7 +16,8 @@ function App() {
       <NavBar />
       <main role="main" className="container">
         <Switch>
-        <Route path="/login" component={LoginForm} />
+          <Route path="/register" component={RegisterForm} />
+          <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
           <Route exact path="/">
