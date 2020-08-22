@@ -1,7 +1,9 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import Select from "react-select";
 import { getMovie } from "../services/fakeMovieService";
+import { getGenres } from "../services/fakeGenreService";
 
 class MovieDetails extends Form {
   constructor(props) {
@@ -14,6 +16,8 @@ class MovieDetails extends Form {
         rate: "",
       },
       errors: {},
+      options: [],
+      selectedOption: "",
     };
   }
 
@@ -21,16 +25,22 @@ class MovieDetails extends Form {
     const movie_id = this.props.match.params.id;
     const movie_details = getMovie(movie_id);
 
-    const {title, dailyRentalRate, genre, numberInStock} = movie_details
+    const genres = getGenres();
+    const options = genres.map((genre) => {
+      return genre;
+    });
 
+    const { title, dailyRentalRate, genre, numberInStock } = movie_details;
     this.setState({
       data: {
         title: title,
         numberstock: numberInStock,
         rate: dailyRentalRate,
-        genre: genre.name
-      }
-    })
+        genre: genre.name,
+      },
+      options,
+      selectedOption: genre.name,
+    });
   }
 
   schema = {
@@ -49,12 +59,32 @@ class MovieDetails extends Form {
     console.log("Submitted");
   };
 
+  handleSelected = (e) => {
+    this.setState({
+      selectedOption: e.target.value
+    });
+  };
+
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Movie Form</h1>
         {this.renderInput("title", "Title")}
-        {this.renderInput("genre", "Genre")}
+        <div className="form-group">
+          <label htmlFor="genres">Genre</label>
+          <select
+            className="form-control"
+            id="genres"
+            value={this.state.selectedOption}
+            onChange={this.handleSelected}
+          >
+            {this.state.options.map((option) => (
+              <option key={option._id} value={option.name}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
         {this.renderInput("numberstock", "Number in Stock")}
         {this.renderInput("rate", "Rate")}
         <button
