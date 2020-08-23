@@ -17,7 +17,7 @@ class MovieDetails extends Form {
       errors: {},
       options: [],
       selectedOption: "",
-      create_movie: false
+      create_movie: false,
     };
   }
 
@@ -31,9 +31,15 @@ class MovieDetails extends Form {
 
     // Create new Movie record
     if (movie_id === "new") {
-
       this.setState({
+        data: {
+          title: "",
+          numberstock: "",
+          rate: "",
+          genre: options[0].name,
+        },
         options,
+        selectedOption: options[0].name,
         create_movie: true
       });
       return;
@@ -62,12 +68,12 @@ class MovieDetails extends Form {
       .min(0)
       .required()
       .label("Number in Stock"),
-    rate: Joi.number().required().label("Rate"),
+    rate: Joi.number().max(5).required().label("Rate"),
   };
 
   doSubmit = () => {
     const { data, options, selectedOption } = this.state;
-    const genre = options.find((g) => g.name === selectedOption);
+    let genre = options.find((g) => g.name === selectedOption);
 
     const movie_id = this.props.match.params.id;
     const movie = {
@@ -94,7 +100,7 @@ class MovieDetails extends Form {
           type="Save"
           className="btn btn-primary"
         >
-          {this.state.create_movie ? "Create" : "Modify"}
+          {this.state.create_movie ? "Save" : "Modify"}
         </button>
       </form>
     );
