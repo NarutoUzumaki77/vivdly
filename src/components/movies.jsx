@@ -90,7 +90,12 @@ class Movies extends Component {
             />
           </div>
           <div className="col-10">
-            <Link type="button" className="btn btn-primary" to="/movies" style={{marginBottom: "15px"}}>
+            <Link
+              type="button"
+              className="btn btn-primary"
+              to="/movies/new"
+              style={{ marginBottom: "15px" }}
+            >
               New Movie
             </Link>
             <h5>Showing {filtered_movies.length} movies from the Database</h5>

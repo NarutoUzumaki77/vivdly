@@ -17,18 +17,30 @@ class MovieDetails extends Form {
       errors: {},
       options: [],
       selectedOption: "",
+      create_movie: false
     };
   }
 
   componentDidMount() {
     const movie_id = this.props.match.params.id;
-    const movie_details = getMovie(movie_id);
 
     const genres = getGenres();
     const options = genres.map((genre) => {
       return genre;
     });
 
+    // Create new Movie record
+    if (movie_id === "new") {
+
+      this.setState({
+        options,
+        create_movie: true
+      });
+      return;
+    }
+
+    // Existing Movie In DB
+    const movie_details = getMovie(movie_id);
     const { title, dailyRentalRate, genre, numberInStock } = movie_details;
     this.setState({
       data: {
@@ -82,7 +94,7 @@ class MovieDetails extends Form {
           type="Save"
           className="btn btn-primary"
         >
-          Register
+          {this.state.create_movie ? "Create" : "Modify"}
         </button>
       </form>
     );
