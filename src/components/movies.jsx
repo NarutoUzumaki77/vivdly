@@ -17,6 +17,7 @@ class Movies extends Component {
       currentPage: 1,
       genres: [],
       currentFilter: "All Genre",
+      search: "",
       sortColumn: { path: "title", order: "asc" },
     };
   }
@@ -62,10 +63,27 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
-    const { currentFilter, genres, sortColumn } = this.state;
+  handleChange = (e) => {
+    this.setState({ search: e.target.value });
+    if (e.target.value.length === 1) {
+      this.handleFilter("All Genre");
+    }
+  };
 
-    const filtered_movies = this.doFilter(currentFilter);
+  searchMovies = (arr, query) => {
+    return arr.filter(
+      (el) => el.title.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
+  };
+
+  render() {
+    const { currentFilter, genres, sortColumn, search } = this.state;
+
+    let filtered_movies = this.doFilter(currentFilter);
+
+    if (search) {
+      filtered_movies = this.searchMovies(this.state.movies, search);
+    }
 
     const sorted = _.orderBy(
       filtered_movies,
@@ -99,6 +117,16 @@ class Movies extends Component {
               New Movie
             </Link>
             <h5>Showing {filtered_movies.length} movies from the Database</h5>
+            <input
+              type="text"
+              className="form-control"
+              id="search"
+              name="search"
+              placeholder="Search..."
+              onChange={this.handleChange}
+              value={this.state.search}
+              style={{ marginBottom: "2px" }}
+            ></input>
             <MoviesTable
               movies={movies}
               doDelete={this.handleDelete}
