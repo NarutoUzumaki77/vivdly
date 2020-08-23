@@ -1,6 +1,7 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import { Redirect } from "react-router-dom";
 import { getMovie, saveMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 
@@ -18,6 +19,7 @@ class MovieDetails extends Form {
       options: [],
       selectedOption: "",
       create_movie: false,
+      redirect: false,
     };
   }
 
@@ -40,13 +42,22 @@ class MovieDetails extends Form {
         },
         options,
         selectedOption: options[0].name,
-        create_movie: true
+        create_movie: true,
+      });
+      return;
+    }
+
+    // Movie does not exist
+    const movie_details = getMovie(movie_id);
+    if (!movie_details) {
+      this.props.history.replace("/404-not-found");
+      this.setState({
+        redirect: true,
       });
       return;
     }
 
     // Existing Movie In DB
-    const movie_details = getMovie(movie_id);
     const { title, dailyRentalRate, genre, numberInStock } = movie_details;
     this.setState({
       data: {
@@ -85,9 +96,15 @@ class MovieDetails extends Form {
     };
 
     saveMovie(movie);
+
+    // Redirect to /movies
+    this.props.history.push("/movies")
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/404-not-found" />;
+    }
     return (
       <form onSubmit={this.handleSubmit}>
         <h1>Movie Form</h1>

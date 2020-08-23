@@ -9,6 +9,8 @@ class Form extends Component {
     this.state = {
       data: {},
       errors: {},
+      options: [],
+      selectedOption: "",
     };
   }
 
