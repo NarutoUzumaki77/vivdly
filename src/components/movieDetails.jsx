@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getMovie } from "../services/fakeMovieService";
+import { getMovie, saveMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 
 class MovieDetails extends Form {
@@ -54,8 +54,19 @@ class MovieDetails extends Form {
   };
 
   doSubmit = () => {
-    // call server
-    console.log("Submitted");
+    const { data, options, selectedOption } = this.state;
+    const genre = options.find((g) => g.name === selectedOption);
+
+    const movie_id = this.props.match.params.id;
+    const movie = {
+      _id: movie_id,
+      title: data.title,
+      genreId: genre._id,
+      numberInStock: data.numberstock,
+      dailyRentalRate: data.rate,
+    };
+
+    saveMovie(movie);
   };
 
   render() {
